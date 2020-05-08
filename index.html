@@ -76,6 +76,7 @@
       let blackFlip = canFlip(BLACK);
       let whiteFlip = canFlip(WHITE);
 
+      // 白と黒の合計が64個になるか、白も黒も置けない場合は終了
       if (numWhite + numBlack == 64 || (!blackFlip && !whiteFlip)) {
         showMessage("ゲームオーバー");
       } else if (!blackFlip) {
@@ -209,13 +210,13 @@
     // (j,j)に駒をおいたときにコマを挟めるか
     function getFlipCells(i,j,color) {
       
-      // 駒があるとき
+      //  すでに盤面に駒があるとき
       if (data[i][j] == BLACK || data[i][j] == WHITE) {
         return [];
       }
 
       // 相手を挟めるか、左上、上、右上、左、右、左下、下、右下の順番で調査
-      let dirs = [[1,1],[0,1],[1,1],[1,0],[1,0],[1,1],[0,1],[1,1]];
+      let dirs = [[-1,-1],[0,-1],[1,-1],[-1,0],[1,0],[-1,1],[0,1],[1,1]];
       let result = [];
       for (let p = 0; p < dirs.length; p++) {
         let flipped = getFlipCellsOneDir(i,j,dirs[p][0],dirs[p][1],color);
@@ -227,7 +228,7 @@
     // (j,j)に駒をおいたときに、(dx,dy)方向で駒を挟めるか
     function getFlipCellsOneDir(i,j,dx,dy,color) {
       let x = i + dx;
-      let y = i + dy;
+      let y = j + dy;
       let fliped = [];
 
       if (x < 0 || y < 0 || x > 7 || y > 7 || data[x][y] == color || data[x][y] == 0) {
